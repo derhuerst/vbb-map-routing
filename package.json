@@ -1,0 +1,19 @@
+{
+  "name": "vbb-map-routing",
+  "description": "Use VBB interactively, using a map.",
+  "version": "0.1.0",
+  "keywords": [
+    "vbb",
+    "map",
+    "bvg",
+    "routing"
+  ],
+  "author": "Jannis R <mail@jannisr.de>",
+  "homepage": "http://derhuerst.github.io/vbb-map-routing/",
+  "repository": "derhuerst/vbb-map-routing",
+  "bugs": "https://github.com/derhuerst/vbb-map-routing/issues",
+  "license": "ISC",
+  "engines": {
+    "node": ">=6"
+  }
+}
