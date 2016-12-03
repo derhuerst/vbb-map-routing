@@ -15,5 +15,21 @@
   "license": "ISC",
   "engines": {
     "node": ">=6"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.1",
+    "es2020": "^1.1.9",
+    "stringify": "^5.1.0",
+    "uglify-js": "^2.7.5",
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "bundle": "browserify -t [ stringify --extensions [.svg] ] -t es2020 index.js > bundle.js",
+    "minify": "cat bundle.js | uglifyjs -mc > bundle.min.js",
+    "build": "npm run bundle && npm run minify",
+    "start": "watchify -t [ stringify --extensions [.svg] ] -t es2020 index.js -o bundle.js"
+  },
+  "dependencies": {
+    "global": "^4.3.1"
   }
 }
