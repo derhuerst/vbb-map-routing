@@ -16,10 +16,25 @@ map.setAttribute('preserveAspectRatio', 'xMidYMid meet')
 
 
 const render = (route) => {
+	Array.from(document.querySelectorAll('.line'))
+	.forEach((line) => line.classList.add('inactive'))
+	Array.from(document.querySelectorAll('.station'))
+	.forEach((station) => station.classList.add('inactive'))
+
 	for (let part of route.parts) {
-		console.log('part', part.from.name, part.to.name);
-		console.log('from', document.querySelector('#station-' + part.from.id));
-		console.log('to', document.querySelector('#station-' + part.to.id));
+		console.log('part', part.from.name, part.to.name)
+
+		for (let passed of part.passed) {
+			const el = document.querySelector('#station-' + passed.station.id)
+			if (el) el.classList.remove('inactive')
+		}
+
+		const line = (part.product || {}).line
+		if (line) {
+			const lineEl = document.querySelector('#line-' + line)
+			if (lineEl) lineEl.classList.remove('inactive')
+			else console.error('could not find line', line)
+		} else console.error('did not get line')
 	}
 }
 
@@ -29,14 +44,20 @@ let from = null
 let to = null
 
 const fetch = debounce(() => {
-	vbb.routes(from, to, {results: 1})
+	vbb.routes(from, to, {
+		results: 1, passedStations: true,
+		tram: false, regional: false, express: false
+	})
 	.then(([route]) => render(route))
 	.catch(console.error)
 }, 100)
 
 const addStation = (id) => {
-	if (to) from = id
-	else if (from) to = id
+	console.info('selecting', id)
+	if (to) {
+		from = id
+		to = null
+	} else if (from) to = id
 	else from = id
 	if (from && to) fetch()
 }
