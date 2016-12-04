@@ -30,8 +30,13 @@
     "start": "watchify -t [ stringify --extensions [.svg] ] -t es2020 index.js -o bundle.js"
   },
   "dependencies": {
+    "@turf/line-slice": "^3.7.0",
+    "abs-svg-path": "^0.1.1",
     "debounce": "^1.0.0",
     "global": "^4.3.1",
+    "parse-svg-path": "^0.1.2",
+    "simplify-geometry": "0.0.2",
+    "svg-path-properties": "^0.1.1",
     "vbb-client": "^0.4.0"
   }
 }
