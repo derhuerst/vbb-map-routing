@@ -20,9 +20,17 @@ const render = (route) => {
 	.forEach((line) => line.classList.add('inactive'))
 	Array.from(document.querySelectorAll('.station'))
 	.forEach((station) => station.classList.add('inactive'))
+	Array.from(document.querySelectorAll('.label'))
+	.forEach((label) => label.classList.add('inactive'))
 
 	for (let part of route.parts) {
 		console.log('part', part.from.name, part.to.name)
+		if (part.product
+			&& part.product.type.type !== 'subway'
+			&& part.product.type.type !== 'suburban') continue
+
+		Array.from(document.querySelectorAll('.label-' + part.product.line))
+		.forEach((label) => label.classList.remove('inactive'))
 
 		for (let passed of part.passed) {
 			const el = document.querySelector('#station-' + passed.station.id)
