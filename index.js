@@ -31,9 +31,15 @@ const render = (route) => {
 	deactivate('.label')
 
 	for (let part of route.parts) {
-		if (part.product
-			&& part.product.type.type !== 'subway'
-			&& part.product.type.type !== 'suburban') continue
+		if (!part.product) {
+			console.warn('Missing mode of transport', part)
+			continue
+		}
+		if (part.product.type.type !== 'subway'
+		&& part.product.type.type !== 'suburban') {
+			console.warn('Unsupported mode of transport', part.product)
+			continue
+		}
 
 		activate('.label-' + part.product.line)
 		for (let passed of part.passed) activate('#station-' + passed.station.id)
@@ -57,6 +63,7 @@ const render = (route) => {
 			segment.setAttribute('d', slicePath(lineEl, fromPos, toPos))
 			segment.style.stroke = window.getComputedStyle(lineEl).stroke
 			segment.style.strokeWidth = '3'
+			segment.style.fill = 'none'
 			lineEl.parentNode.appendChild(segment)
 		}
 	}
@@ -67,7 +74,7 @@ const render = (route) => {
 const fetch = debounce(() => {
 	vbb.routes(from, to, {
 		results: 1, passedStations: true,
-		tram: false, regional: false, express: false
+		tram: false, regional: false, express: false, bus: false
 	})
 	.then(([route]) => render(route))
 	.catch(console.error)

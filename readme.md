@@ -7,6 +7,7 @@
 [![dependency status](https://img.shields.io/david/derhuerst/vbb-map-routing.svg)](https://david-dm.org/derhuerst/vbb-map-routing)
 [![dev dependency status](https://img.shields.io/david/dev/derhuerst/vbb-map-routing.svg)](https://david-dm.org/derhuerst/vbb-map-routing#info=devDependencies)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/vbb-map-routing.svg)
+[![gitter channel](https://badges.gitter.im/derhuerst/vbb-rest.svg)](https://gitter.im/derhuerst/vbb-rest)
 
 ## Contributing
 
