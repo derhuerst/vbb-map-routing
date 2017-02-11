@@ -3,11 +3,13 @@
 const document = require('global/document')
 const vbb = require('vbb-client')
 const debounce = require('debounce')
+const ms = require('ms')
 
 const closestDistanceOnPath = require('./closest-distance-on-path')
 const slicePath = require('./slice-path')
-const src = require('./map.svg')
+const pathCenter = require('./path-center')
 
+const src = require('./map.svg')
 const wrapper = document.createElement('div')
 wrapper.innerHTML = src
 const map = wrapper.querySelector('svg')
@@ -59,12 +61,23 @@ const render = (route) => {
 			const toY = toBBox.y + toBBox.height / 2
 			const toPos = closestDistanceOnPath(toX, toY, lineEl)
 
+			const slice = slicePath(lineEl, fromPos, toPos)
+
 			const segment = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-			segment.setAttribute('d', slicePath(lineEl, fromPos, toPos))
+			segment.setAttribute('d', slice)
 			segment.style.stroke = window.getComputedStyle(lineEl).stroke
 			segment.style.strokeWidth = '3'
 			segment.style.fill = 'none'
 			lineEl.parentNode.appendChild(segment)
+
+			const center = pathCenter(slice)
+			const duration = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+			duration.innerHTML = ms(part.end - part.start)
+			// todo: find out what the perfect distance is
+			duration.setAttribute('x', center.x + 8 * Math.cos(center.tangentX))
+			duration.setAttribute('y', center.y)
+			duration.classList.add('caption')
+			lineEl.parentNode.appendChild(duration)
 		}
 	}
 }
