@@ -5,9 +5,9 @@ const vbb = require('vbb-client')
 const debounce = require('debounce')
 const ms = require('ms')
 
-const closestDistanceOnPath = require('./closest-distance-on-path')
-const slicePath = require('./slice-path')
-const pathCenter = require('./path-center')
+const closestDistanceOnPath = require('./lib/closest-distance-on-path')
+const slicePath = require('./lib/slice-path')
+const pathCenter = require('./lib/path-center')
 
 const src = require('./map.svg')
 const wrapper = document.createElement('div')
