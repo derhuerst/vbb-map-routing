@@ -43,7 +43,7 @@ const render = (route) => {
 			continue
 		}
 
-		activate('.label-' + part.product.line)
+		activate('.label.' + part.product.line)
 		for (let passed of part.passed) activate('#station-' + passed.station.id)
 
 		const from = document.querySelector('#station-' + part.from.id)
@@ -110,3 +110,38 @@ map.addEventListener('click', (e) => {
 	if (!e.target.getAttribute('data-id')) return
 	addStation(+e.target.getAttribute('data-id'))
 })
+
+
+
+const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+marker.setAttribute('r', '8')
+marker.style.strokeWidth = '1'
+marker.style.stroke = '#f0d722'
+marker.style.fill = 'none'
+
+const highlight = (el) => {
+	const bbox = el.getBBox()
+	const x = bbox.x + bbox.width / 2
+	const y = bbox.y + bbox.height / 2
+	marker.setAttribute('cx', x)
+	marker.setAttribute('cy', y)
+
+	removeHighlight()
+	el.parentNode.appendChild(marker)
+}
+const removeHighlight = () => {
+	if (marker.parentNode) marker.parentNode.removeChild(marker)
+}
+
+for (let el of Array.from(document.querySelectorAll('.station'))) {
+	el.addEventListener('mouseenter', (e) => {
+		if (!e.target.classList.contains('station')) return
+		if (!e.target.getAttribute('data-id')) return
+		highlight(e.target)
+	})
+	el.addEventListener('mouseleave', (e) => {
+		if (!e.target.classList.contains('station')) return
+		if (!e.target.getAttribute('data-id')) return
+		removeHighlight()
+	})
+}
