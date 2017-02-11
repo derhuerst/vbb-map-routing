@@ -1,147 +1,100 @@
 'use strict'
 
-const document = require('global/document')
-const vbb = require('vbb-client')
 const debounce = require('debounce')
-const ms = require('ms')
+const vbb = require('vbb-client')
+const document = require('global/document')
+const createElement = require('virtual-dom/create-element')
+const diff = require('virtual-dom/diff')
+const patch = require('virtual-dom/patch')
+// const ms = require('ms')
 
+const renderMap = require('./lib/render-map')
 const closestDistanceOnPath = require('./lib/closest-distance-on-path')
 const slicePath = require('./lib/slice-path')
-const pathCenter = require('./lib/path-center')
-
-const src = require('./map.svg')
-const wrapper = document.createElement('div')
-wrapper.innerHTML = src
-const map = wrapper.querySelector('svg')
-document.body.appendChild(map)
-map.classList.add('map')
-map.setAttribute('preserveAspectRatio', 'xMidYMid meet')
+// const pathCenter = require('./lib/path-center')
 
 
 
-const activate = (selector) =>
-	Array.from(document.querySelectorAll(selector))
-	.forEach((line) => line.classList.remove('inactive'))
+const state = {
+	from: null,
+	to: null,
+	line: null,
+	passed: [],
+	slices: []
+}
 
-const deactivate = (selector) =>
-	Array.from(document.querySelectorAll(selector))
-	.forEach((line) => line.classList.add('inactive'))
+const addStation = (id) => {
+	if (state.to) {
+		state.from = id
+		state.to = null
+	} else if (state.from) state.to = id
+	else state.from = id
 
-const render = (route) => {
-	deactivate('.line')
-	deactivate('.station')
-	deactivate('.label')
+	state.passed = []
+	state.slices = []
+	state.line = null
+	if (state.from && state.to) fetch()
+	rerender()
+}
 
-	for (let part of route.parts) {
-		if (!part.product) {
-			console.warn('Missing mode of transport', part)
-			continue
-		}
-		if (part.product.type.type !== 'subway'
-		&& part.product.type.type !== 'suburban') {
-			console.warn('Unsupported mode of transport', part.product)
-			continue
-		}
+const setRoute = (route) => {
+	const part = route.parts[0] // todo: support all parts
+	const from = part.from.id
+	const to = part.to.id
+	const line = part.product.line
 
-		activate('.label.' + part.product.line)
-		for (let passed of part.passed) activate('#station-' + passed.station.id)
+	state.from = from
+	state.to = to
+	state.line = line
+	state.passed = part.passed.map((passed) => passed.station.id)
 
-		const from = document.querySelector('#station-' + part.from.id)
-		const to = document.querySelector('#station-' + part.to.id)
-		const lineEl = document.querySelector('#line-' + part.product.line)
+	const fromEl = document.querySelector('#station-' + from)
+	const toEl = document.querySelector('#station-' + to)
+	const lineEl = document.querySelector('#line-' + line)
 
-		if (from && to && lineEl) {
-			const fromBBox = from.getBBox()
-			const fromX = fromBBox.x + fromBBox.width / 2
-			const fromY = fromBBox.y + fromBBox.height / 2
-			const fromPos = closestDistanceOnPath(fromX, fromY, lineEl)
+	if (fromEl && toEl && lineEl) {
+		const fromBBox = fromEl.getBBox()
+		const fromX = fromBBox.x + fromBBox.width / 2
+		const fromY = fromBBox.y + fromBBox.height / 2
+		const fromPos = closestDistanceOnPath(fromX, fromY, lineEl)
 
-			const toBBox = to.getBBox()
-			const toX = toBBox.x + toBBox.width / 2
-			const toY = toBBox.y + toBBox.height / 2
-			const toPos = closestDistanceOnPath(toX, toY, lineEl)
+		const toBBox = toEl.getBBox()
+		const toX = toBBox.x + toBBox.width / 2
+		const toY = toBBox.y + toBBox.height / 2
+		const toPos = closestDistanceOnPath(toX, toY, lineEl)
 
-			const slice = slicePath(lineEl, fromPos, toPos)
-
-			const segment = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-			segment.setAttribute('d', slice)
-			segment.style.stroke = window.getComputedStyle(lineEl).stroke
-			segment.style.strokeWidth = '3'
-			segment.style.fill = 'none'
-			lineEl.parentNode.appendChild(segment)
-
-			const center = pathCenter(slice)
-			const duration = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-			duration.innerHTML = ms(part.end - part.start)
-			// todo: find out what the perfect distance is
-			duration.setAttribute('x', center.x + 8 * Math.cos(center.tangentX))
-			duration.setAttribute('y', center.y)
-			duration.classList.add('caption')
-			lineEl.parentNode.appendChild(duration)
-		}
+		const path = slicePath(lineEl, fromPos, toPos)
+		state.slices = [{path, line}]
 	}
+
+	rerender()
+}
+
+
+
+let tree = renderMap(state)
+let root = createElement(tree)
+document.body.appendChild(root)
+
+const rerender = () => {
+	const newTree = renderMap(state)
+	root = patch(root, diff(tree, newTree))
+	tree = newTree
 }
 
 
 
 const fetch = debounce(() => {
-	vbb.routes(from, to, {
+	vbb.routes(+state.from, +state.to, {
 		results: 1, passedStations: true,
 		tram: false, regional: false, express: false, bus: false
 	})
-	.then(([route]) => render(route))
+	.then(([route]) => setRoute(route))
 	.catch(console.error)
 }, 100)
 
-let from = null
-let to = null
-
-const addStation = (id) => {
-	if (to) {
-		from = id
-		to = null
-	} else if (from) to = id
-	else from = id
-	if (from && to) fetch()
-}
-
-map.addEventListener('click', (e) => {
+root.addEventListener('click', (e) => {
 	if (!e.target.classList.contains('station')) return
-	if (!e.target.getAttribute('data-id')) return
-	addStation(+e.target.getAttribute('data-id'))
+	const id = e.target.getAttribute('data-id')
+	if (id) addStation(id)
 })
-
-
-
-const marker = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-marker.setAttribute('r', '8')
-marker.style.strokeWidth = '1'
-marker.style.stroke = '#f0d722'
-marker.style.fill = 'none'
-
-const highlight = (el) => {
-	const bbox = el.getBBox()
-	const x = bbox.x + bbox.width / 2
-	const y = bbox.y + bbox.height / 2
-	marker.setAttribute('cx', x)
-	marker.setAttribute('cy', y)
-
-	removeHighlight()
-	el.parentNode.appendChild(marker)
-}
-const removeHighlight = () => {
-	if (marker.parentNode) marker.parentNode.removeChild(marker)
-}
-
-for (let el of Array.from(document.querySelectorAll('.station'))) {
-	el.addEventListener('mouseenter', (e) => {
-		if (!e.target.classList.contains('station')) return
-		if (!e.target.getAttribute('data-id')) return
-		highlight(e.target)
-	})
-	el.addEventListener('mouseleave', (e) => {
-		if (!e.target.classList.contains('station')) return
-		if (!e.target.getAttribute('data-id')) return
-		removeHighlight()
-	})
-}
