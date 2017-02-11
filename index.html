@@ -5,7 +5,6 @@
 	<meta charset="utf-8"/>
 	<title>vbb-map-routing</title>
 	<meta name="author" content="Jannis R <mail@jannisr.de>"/>
-	<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 	<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	<style>
 		html, body {
@@ -24,9 +23,13 @@
 		}
 		.station {
 			cursor: pointer;
+			z-index: 1;
 		}
 		.inactive {
 			opacity: .3;
+		}
+		.slice {
+			z-index: 0;
 		}
 		.caption {
 			alignment-baseline: middle;

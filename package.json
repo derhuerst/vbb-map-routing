@@ -39,6 +39,8 @@
     "parse-svg-path": "^0.1.2",
     "simplify-geometry": "0.0.2",
     "svg-path-properties": "^0.1.1",
-    "vbb-client": "^0.4.0"
+    "vbb-client": "^0.4.0",
+    "vhtml": "^2.1.0",
+    "virtual-dom": "^2.1.1"
   }
 }
