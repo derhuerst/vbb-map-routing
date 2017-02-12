@@ -17,17 +17,17 @@
     "node": ">=6"
   },
   "devDependencies": {
-    "browserify": "^13.1.1",
+    "browserify": "^14.0.0",
     "es2020": "^1.1.9",
     "stringify": "^5.1.0",
     "uglify-js": "mishoo/UglifyJS2#harmony",
-    "watchify": "^3.7.0"
+    "wzrd": "^1.5.0"
   },
   "scripts": {
-    "bundle": "browserify -t [ stringify --extensions [.svg] ] -t es2020 index.js > bundle.js",
+    "bundle": "browserify -t es2020 index.js > bundle.js",
     "minify": "cat bundle.js | uglifyjs -mc > bundle.min.js",
     "build": "npm run bundle && npm run minify",
-    "start": "watchify -t [ stringify --extensions [.svg] ] -t es2020 index.js -o bundle.js"
+    "start": "wzrd index.js:bundle.js -- -t es2020"
   },
   "dependencies": {
     "@turf/line-slice": "^3.7.0",
@@ -39,7 +39,7 @@
     "parse-svg-path": "^0.1.2",
     "simplify-geometry": "0.0.2",
     "svg-path-properties": "^0.1.1",
-    "vbb-client": "^0.4.0",
+    "vbb-client": "^1.0.0",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }
