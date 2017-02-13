@@ -1,5 +1,6 @@
 'use strict'
 
+const delegator = require('dom-delegator')
 const debounce = require('debounce')
 const vbb = require('vbb-client')
 const document = require('global/document')
@@ -19,10 +20,40 @@ const slicePath = require('./lib/slice-path')
 
 
 const state = {
+	fromQuery: '',
+	toQuery: '',
 	from: null,
 	to: null,
 	stations: [],
 	slices: []
+}
+
+
+
+const setFromQuery = (value) => {
+	state.fromQuery = value
+	rerender()
+}
+
+const setToQuery = (value) => {
+	state.toQuery = value
+	rerender()
+}
+
+const search = () => {
+	vbb.stations({
+		results: 1, completion: true, query: state.fromQuery,
+		identifier: 'vbb-map-routing'
+	})
+	.then(([station]) => console.log(station))
+	.catch(console.error)
+
+	vbb.stations({
+		results: 1, completion: true, query: state.toQuery,
+		identifier: 'vbb-map-routing'
+	})
+	.then(([station]) => console.log(station))
+	.catch(console.error)
 }
 
 const addStation = (id) => {
@@ -75,22 +106,31 @@ const setRoute = (route) => {
 	rerender()
 }
 
+const actions = {
+	setFromQuery, setToQuery, search,
+	addStation,
+	setRoute
+}
 
 
-const render = (state) =>
+
+const events = delegator()
+events.listenTo('submit')
+
+const render = (state, actions) =>
 	h('div', {
 		className: 'wrapper'
 	}, [
-		renderBar(state),
-		renderMap(state)
+		renderBar(state, actions),
+		renderMap(state, actions)
 	])
 
-let tree = render(state)
+let tree = render(state, actions)
 let root = createElement(tree)
 document.body.appendChild(root)
 
 const rerender = () => {
-	const newTree = render(state)
+	const newTree = render(state, actions)
 	root = patch(root, diff(tree, newTree))
 	tree = newTree
 }
@@ -100,7 +140,8 @@ const rerender = () => {
 const fetch = debounce(() => {
 	vbb.routes(+state.from, +state.to, {
 		results: 1, passedStations: true,
-		tram: false, regional: false, express: false, bus: false
+		tram: false, regional: false, express: false, bus: false,
+		identifier: 'vbb-map-routing'
 	})
 	.then(([route]) => setRoute(route))
 	.catch(console.error)
