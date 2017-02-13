@@ -12,14 +12,20 @@
 		}
 		body {
 			margin: 0;
+			background-color: #eee;
+			font-family: sans-serif;
+		}
+		.wrapper {
+			height: 100%;
 			text-align: center;
 			display: flex;
-			align-items: center;
+			align-items: stretch;
 			justify-content: center;
 		}
 		.map {
-			max-width: 90vw;
-			max-height: 90vh;
+			padding: 1em;
+			max-height: 100%;
+			box-sizing: border-box;
 		}
 		.station {
 			cursor: pointer;

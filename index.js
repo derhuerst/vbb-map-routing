@@ -3,6 +3,7 @@
 const debounce = require('debounce')
 const vbb = require('vbb-client')
 const document = require('global/document')
+const h = require('virtual-dom/h')
 const createElement = require('virtual-dom/create-element')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
@@ -10,6 +11,7 @@ const patch = require('virtual-dom/patch')
 
 const data = require('bvg-topological-map/index.json')
 const renderMap = require('./lib/render-map')
+const renderBar = require('./lib/render-bar')
 const closestDistanceOnPath = require('./lib/closest-distance-on-path')
 const slicePath = require('./lib/slice-path')
 // const pathCenter = require('./lib/path-center')
@@ -75,12 +77,20 @@ const setRoute = (route) => {
 
 
 
-let tree = renderMap(state)
+const render = (state) =>
+	h('div', {
+		className: 'wrapper'
+	}, [
+		renderBar(state),
+		renderMap(state)
+	])
+
+let tree = render(state)
 let root = createElement(tree)
 document.body.appendChild(root)
 
 const rerender = () => {
-	const newTree = renderMap(state)
+	const newTree = render(state)
 	root = patch(root, diff(tree, newTree))
 	tree = newTree
 }
