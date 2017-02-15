@@ -1,0 +1,42 @@
+html, body {
+	height: 100%;
+}
+body {
+	margin: 0;
+	font-size: 100%;
+	font-family: sans-serif;
+	background-color: #eee;
+}
+
+input,
+button {
+	margin: .5em 0;
+	padding: .3em;
+	display: block;
+	width: 100%;
+	font-size: 95%;
+	box-sizing: border-box;
+	border-radius: .2em;
+}
+input {
+	border: 1px solid #ccc;
+}
+input:focus {
+	outline: none;
+	border-color: #c0392b;
+}
+
+button {
+	color: white;
+	cursor: pointer;
+	background-color: #c0392b;
+	border: none;
+}
+button:hover,
+button:focus {
+	background-color: #d0493b;
+	outline: none;
+}
+button:active {
+	background-color: #b0291b;
+}

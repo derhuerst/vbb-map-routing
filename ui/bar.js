@@ -2,10 +2,12 @@
 
 const h = require('virtual-dom/h')
 
+const styles = require('./bar.css.js')
+
 const renderSearch = (state, actions) =>
 	h('form', {
 		action: '#',
-		class: 'search'
+		className: styles.search + ''
 	}, [
 		h('input', {
 			type: 'text',
@@ -25,9 +27,10 @@ const renderSearch = (state, actions) =>
 
 const render = (state, actions) =>
 	h('div', {
-		className: 'bar'
+		className: styles.bar + ''
 	}, [
-		renderSearch(state, actions)
+		renderSearch(state, actions),
+		state.fromQuery
 	])
 
 module.exports = render
