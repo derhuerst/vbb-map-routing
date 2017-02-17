@@ -43,6 +43,7 @@
     "simplify-geometry": "0.0.2",
     "svg-path-properties": "^0.1.1",
     "vbb-client": "^1.0.0",
+    "vbb-util": "^0.10.1",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }

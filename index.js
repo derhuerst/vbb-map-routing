@@ -19,6 +19,7 @@ const render = require('./ui')
 const state = {
 	fromQuery: '',
 	toQuery: '',
+	route: null,
 	from: null,
 	to: null,
 	stations: [],
@@ -68,6 +69,7 @@ const addStation = (id) => {
 }
 
 const setRoute = (route) => {
+	state.route = route
 	state.stations = []
 	state.slices = []
 

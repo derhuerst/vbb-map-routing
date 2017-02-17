@@ -3,6 +3,7 @@
 const h = require('virtual-dom/h')
 
 const styles = require('./bar.css.js')
+const renderRoute = require('./route')
 
 const renderSearch = (state, actions) =>
 	h('form', {
@@ -30,7 +31,7 @@ const render = (state, actions) =>
 		className: styles.bar + ''
 	}, [
 		renderSearch(state, actions),
-		state.fromQuery
+		renderRoute(state, actions)
 	])
 
 module.exports = render
