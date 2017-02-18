@@ -51,20 +51,19 @@ const renderLine = (part, i, details, actions) => {
 	])
 }
 
-const renderStop = (stop, actions) => {
-	return h('li', {
+const renderStop = (stop, actions) =>
+	h('li', {
 		className: styles.stop + ''
 	}, [
 		h('div', {
 			className: styles.link + '',
-			'ev-click': () => actions.focusStation(stop.id)
+			'ev-click': () => actions.setHighlight(stop.id)
 		}, stop.name)
 	])
-}
 
 const renderParts = (state, actions) =>
 	state.route.parts.reduce((parts, part, i) => {
-		if (i === 0) parts.push(renderStop(part.from, true))
+		if (i === 0) parts.push(renderStop(part.from, actions))
 
 		const details = state.details.includes(i)
 		parts.push(

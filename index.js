@@ -31,7 +31,8 @@ const state = {
 	route: null,
 	details: [],
 	stations: [],
-	slices: []
+	slices: [],
+	highlight: null
 }
 
 
@@ -162,8 +163,15 @@ const hidePartDetails = (part) => {
 	rerender()
 }
 
-const focusStation = (id) => {
-	// todo
+const setHighlight = (id) => {
+	const el = document.querySelector('#station-' + id)
+	// todo: find a better way to compute the bounding box, without using the DOM
+	const bbox = el.getBBox()
+	const x = bbox.x + bbox.width / 2
+	const y = bbox.y + bbox.height / 2
+
+	state.highlight = {x, y}
+	rerender()
 }
 
 const actions = {
@@ -172,7 +180,7 @@ const actions = {
 	addStation,
 	setRoute,
 	showPartDetails, hidePartDetails,
-	focusStation
+	setHighlight
 }
 
 

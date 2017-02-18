@@ -28,6 +28,12 @@ const styles = css `
 	stroke-width: 1;
 }
 
+.highlight {
+	fill: none;
+	stroke-width: 3;
+	stroke: red;
+}
+
 .stations .interchanges .station {
 	fill: #fff;
 	stroke: #000;

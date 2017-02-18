@@ -125,6 +125,16 @@ const renderSlice = ({shape, line}) =>
 		}
 	})
 
+const renderHighlight = (state) => {
+	if (!state.highlight) return null
+	return h('circle', {
+		class: styles.highlight + '',
+		r: 10,
+		cx: state.highlight.x,
+		cy: state.highlight.y
+	})
+}
+
 const render = (state, actions) =>
 	h('svg', {
 		class: styles.map + '',
@@ -143,7 +153,8 @@ const render = (state, actions) =>
 			h('g', {class: styles.interchanges + ''}, [
 				renderInterchanges(state, actions)
 			])
-		].concat(renderStops(state, actions)))
+		].concat(renderStops(state, actions))),
+		renderHighlight(state)
 	])
 
 module.exports = render
