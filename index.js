@@ -73,6 +73,7 @@ const setRoute = (route) => {
 	state.route = route
 	state.stations = []
 	state.slices = []
+	state.details = []
 
 	for (let part of route.parts) {
 		const from = part.from.id
@@ -120,11 +121,16 @@ const hidePartDetails = (part) => {
 	rerender()
 }
 
+const focusStation = (id) => {
+	// todo
+}
+
 const actions = {
 	setFromQuery, setToQuery, search,
 	addStation,
 	setRoute,
-	showPartDetails, hidePartDetails
+	showPartDetails, hidePartDetails,
+	focusStation
 }
 
 

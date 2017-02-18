@@ -56,14 +56,14 @@ const renderStop = (stop, actions) => {
 		className: styles.stop + ''
 	}, [
 		h('div', {
-			className: styles.link + ''
+			className: styles.link + '',
+			'ev-click': () => actions.focusStation(stop.id)
 		}, stop.name)
 	])
 }
 
 const renderParts = (state, actions) =>
 	state.route.parts.reduce((parts, part, i) => {
-		console.log(state.details)
 		if (i === 0) parts.push(renderStop(part.from, true))
 
 		const details = state.details.includes(i)

@@ -4,7 +4,7 @@ const css = require('csjs')
 
 const styles = css `
 .route {
-	margin: 1em 0;
+	margin: 0;
 	padding-left: 0;
 	text-align: left;
 	list-style: none;

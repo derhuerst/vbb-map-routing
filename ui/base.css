@@ -14,7 +14,7 @@ button {
 	padding: .3em;
 	display: block;
 	width: 100%;
-	font-size: 95%;
+	font-size: 92%;
 	box-sizing: border-box;
 	border-radius: .2em;
 }
@@ -23,20 +23,20 @@ input {
 }
 input:focus {
 	outline: none;
-	border-color: #c0392b;
+	border-color: #3498db;
 }
 
 button {
 	color: white;
 	cursor: pointer;
-	background-color: #c0392b;
+	background-color: #2980b9;
 	border: none;
 }
 button:hover,
 button:focus {
-	background-color: #d0493b;
+	background-color: #3498db;
 	outline: none;
 }
 button:active {
-	background-color: #b0291b;
+	background-color: #1970a9;
 }
