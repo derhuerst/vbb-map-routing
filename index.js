@@ -77,22 +77,6 @@ const selectTo = (id, name) => {
 	rerender()
 }
 
-const search = () => {
-	vbb.stations({
-		results: 1, completion: true, query: state.fromQuery,
-		identifier: 'vbb-map-routing'
-	})
-	.then(([station]) => console.log(station))
-	.catch(console.error)
-
-	vbb.stations({
-		results: 1, completion: true, query: state.toQuery,
-		identifier: 'vbb-map-routing'
-	})
-	.then(([station]) => console.log(station))
-	.catch(console.error)
-}
-
 const addStation = (id) => {
 	if (state.to.id) {
 		state.from.id = id
@@ -107,7 +91,7 @@ const addStation = (id) => {
 	state.stations = []
 	state.slices = []
 
-	if (state.from.id && state.to.id) fetch()
+	if (state.from.id && state.to.id) search()
 	rerender()
 }
 
@@ -150,6 +134,16 @@ const setRoute = (route) => {
 	rerender()
 }
 
+const search = () => {
+	vbb.routes(+state.from.id, +state.to.id, {
+		results: 1, passedStations: true,
+		tram: false, regional: false, express: false, bus: false,
+		identifier: 'vbb-map-routing'
+	})
+	.then(([route]) => setRoute(route))
+	.catch(console.error)
+}
+
 const showPartDetails = (part) => {
 	if (state.details.includes(part)) return
 	state.details.push(part)
@@ -178,7 +172,7 @@ const actions = {
 	suggestFrom, suggestTo,
 	selectFrom, selectTo,
 	addStation,
-	setRoute,
+	setRoute, search,
 	showPartDetails, hidePartDetails,
 	setHighlight
 }
@@ -195,16 +189,4 @@ const rerender = () => {
 	const newTree = render(state, actions)
 	root = patch(root, diff(tree, newTree))
 	tree = newTree
-}
-
-
-
-const fetch = () => {
-	vbb.routes(+state.from, +state.to, {
-		results: 1, passedStations: true,
-		tram: false, regional: false, express: false, bus: false,
-		identifier: 'vbb-map-routing'
-	})
-	.then(([route]) => setRoute(route))
-	.catch(console.error)
 }

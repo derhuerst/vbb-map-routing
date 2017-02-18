@@ -44,7 +44,7 @@ const renderLabelUses = (state) => {
 		for (let position of label.positions) {
 			const [x, y] = position
 
-			const inactive = state.from && state.to
+			const inactive = state.route
 				? (state.slices.find(({line}) => line === id) ? '' : styles.inactive)
 				: ''
 			r.push(h('use', {
@@ -65,7 +65,7 @@ const renderLines = (state) => {
 	for (let id in data.lines) {
 		const line = data.lines[id]
 
-		const inactive = state.from && state.to ? styles.inactive : ''
+		const inactive = state.route ? styles.inactive : ''
 		r.push(h('path', {
 			id: 'line-' + id,
 			class: [
@@ -79,13 +79,15 @@ const renderLines = (state) => {
 
 const renderStation = (state, id, station, actions) => {
 	let inactive = ''
-	if (state.from && state.to) {
+	if (state.route) {
 		if (!state.stations.includes(id)) inactive = styles.inactive
 	}
 	return h('path', {
 		id: 'station-' + id,
 		class: [
-			styles.station, station.wifi ? styles.wifi : '', inactive
+			styles.station,
+			station.wifi ? styles.wifi : '',
+			inactive
 		].concat(station.lines).join(' '),
 		d: station.shape,
 		attributes: {'data-id': id},
