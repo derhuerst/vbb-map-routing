@@ -6,10 +6,21 @@ const ms = require('ms')
 
 const styles = require('./route.css.js')
 
-const renderLine = (part) => {
+const renderLine = (part, i, details, actions) => {
 	const product = part.product || {}
 	const mode = product.type || {}
 	const color = colors[mode.type] && colors[mode.type][product.line] && colors[mode.type][product.line] || {}
+
+	const passed = []
+	if (details) {
+		for (let stop of part.passed)
+			passed.push(h('li', {}, stop.station.name))
+	}
+
+	const nrOfPassed = h('span', {
+		className: styles.link + '',
+		'ev-click': details ? () => actions.hidePartDetails(i) : () => actions.showPartDetails(i)
+	}, (part.passed.length - 1) + ' stations')
 
 	return h('li', {
 		className: styles.line + '',
@@ -32,31 +43,34 @@ const renderLine = (part) => {
 		}, [
 			ms(new Date(part.end) - new Date(part.start)),
 			', ',
-			part.passed.length - 1,
-			' stations'
-		])
+			nrOfPassed,
+		]),
+		h('div', {
+			className: styles.details + ''
+		}, passed)
 	])
 }
 
-const renderStop = (stop, first) => {
+const renderStop = (stop, actions) => {
 	return h('li', {
-		className: [
-			styles.stop,
-			first ? styles.first : ''
-		].join(' ')
+		className: styles.stop + ''
 	}, [
 		h('div', {
-			className: styles.name + ''
-		}, [
-			stop.name
-		])
+			className: styles.link + ''
+		}, stop.name)
 	])
 }
 
 const renderParts = (state, actions) =>
 	state.route.parts.reduce((parts, part, i) => {
+		console.log(state.details)
 		if (i === 0) parts.push(renderStop(part.from, true))
-		parts.push(renderLine(part), renderStop(part.to))
+
+		const details = state.details.includes(i)
+		parts.push(
+			renderLine(part, i, details, actions),
+			renderStop(part.to, actions)
+		)
 
 		return parts
 	}, [])

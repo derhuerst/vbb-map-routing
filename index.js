@@ -20,6 +20,7 @@ const state = {
 	fromQuery: '',
 	toQuery: '',
 	route: null,
+	details: [],
 	from: null,
 	to: null,
 	stations: [],
@@ -106,10 +107,24 @@ const setRoute = (route) => {
 	rerender()
 }
 
+const showPartDetails = (part) => {
+	if (state.details.includes(part)) return
+	state.details.push(part)
+	rerender()
+}
+
+const hidePartDetails = (part) => {
+	const i = state.details.indexOf(part)
+	if (i === -1) return
+	state.details.splice(i, 1)
+	rerender()
+}
+
 const actions = {
 	setFromQuery, setToQuery, search,
 	addStation,
-	setRoute
+	setRoute,
+	showPartDetails, hidePartDetails
 }
 
 

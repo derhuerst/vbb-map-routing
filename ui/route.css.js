@@ -4,11 +4,24 @@ const css = require('csjs')
 
 const styles = css `
 .route {
+	margin: 1em 0;
 	padding-left: 0;
 	text-align: left;
 	list-style: none;
 	line-height: 1.4;
 	color: #444;
+}
+
+.link {
+	padding: 0 .25em;
+	display: inline-block;
+	line-height: 1.4;
+	background-color: transparent;
+	border-radius: .2em;
+	cursor: pointer;
+}
+.link:hover {
+	background-color: rgba(52, 152, 219, .4);
 }
 
 .stop {
@@ -25,18 +38,6 @@ const styles = css `
 	font-family: monospace;
 	line-height: inherit;
 	color: #888;
-}
-
-.stop .name {
-	padding: 0 .25em;
-	display: inline-block;
-	line-height: 1.4;
-	background-color: transparent;
-	border-radius: .2em;
-	cursor: pointer;
-}
-.stop .name:hover {
-	background-color: rgba(52, 152, 219, .4);
 }
 
 .line {
