@@ -1,5 +1,6 @@
 'use strict'
 
+const debounce = require('debounce')
 const delegator = require('dom-delegator')
 const document = require('global/document')
 const createElement = require('virtual-dom/create-element')
@@ -17,25 +18,61 @@ const render = require('./ui')
 
 
 const state = {
-	fromQuery: '',
-	toQuery: '',
+	from: {
+		id: null,
+		name: null,
+		suggestions: []
+	},
+	to: {
+		id: null,
+		name: null,
+		suggestions: []
+	},
 	route: null,
 	details: [],
-	from: null,
-	to: null,
 	stations: [],
 	slices: []
 }
 
 
 
-const setFromQuery = (value) => {
-	state.fromQuery = value
+const suggest = (which) => debounce((query) => {
+	query = query.trim()
+	state[which].id = null
+	state[which].name = null
+	rerender()
+
+	if (query === '') {
+		state[which].suggestions = []
+		rerender()
+		return
+	}
+
+	vbb.stations({
+		query, completion: true,
+		identifier: 'vbb-map-routing'
+	})
+	.then((suggestions) => {
+		state[which].suggestions = suggestions
+		rerender()
+	})
+	.catch(console.error)
+}, 50)
+
+const suggestFrom = suggest('from')
+const suggestTo = suggest('to')
+
+const selectFrom = (id, name) => {
+	state.from.id = id
+	state.from.name = name
+	state.from.suggestions = []
 	rerender()
 }
 
-const setToQuery = (value) => {
-	state.toQuery = value
+const selectTo = (id, name) => {
+	state.to.id = id
+	state.to.name = name
+	state.to.suggestions = []
 	rerender()
 }
 
@@ -56,16 +93,20 @@ const search = () => {
 }
 
 const addStation = (id) => {
-	if (state.to) {
-		state.from = id
-		state.to = null
-	} else if (state.from) state.to = id
-	else state.from = id
+	if (state.to.id) {
+		state.from.id = id
+		// todo: name
+		state.to.id = null
+	} else if (state.from.id) state.to.id = id
+	// todo: name
+	else state.from.id = id
 
+	state.from.suggestions = []
+	state.to.suggestions = []
 	state.stations = []
 	state.slices = []
 
-	if (state.from && state.to) fetch()
+	if (state.from.id && state.to.id) fetch()
 	rerender()
 }
 
@@ -126,7 +167,8 @@ const focusStation = (id) => {
 }
 
 const actions = {
-	setFromQuery, setToQuery, search,
+	suggestFrom, suggestTo,
+	selectFrom, selectTo,
 	addStation,
 	setRoute,
 	showPartDetails, hidePartDetails,
