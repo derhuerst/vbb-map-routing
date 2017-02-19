@@ -3,12 +3,6 @@
 const css = require('csjs')
 
 const styles = css `
-.map {
-	padding: 1em;
-	max-height: 100%;
-	box-sizing: border-box;
-}
-
 .inactive {
 	opacity: .3;
 }

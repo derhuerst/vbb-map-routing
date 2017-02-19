@@ -1,6 +1,7 @@
 'use strict'
 
 const h = require('virtual-dom/virtual-hyperscript/svg')
+const h2 = require('virtual-dom/h')
 const data = require('bvg-topological-map/index.json')
 
 const styles = require('./map.css.js')
@@ -138,25 +139,30 @@ const renderHighlight = (state) => {
 }
 
 const render = (state, actions) =>
-	h('svg', {
-		class: styles.map + '',
-		xmlns: 'http://www.w3.org/2000/svg',
-		'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-		width: data.width,
-		height: data.height,
-		viewBox: `0 0 ${data.width} ${data.height}`
+	h2('div', {
+		style: { overflow: 'scroll' }
 	}, [
-		h('style', {}, css),
-		h('defs', {}, renderLabelDefs()),
-		h('g', {}, state.slices.map(renderSlice)),
-		h('g', {class: styles.labels + ''}, renderLabelUses(state)),
-		h('g', {class: styles.lines + ''}, renderLines(state)),
-		h('g', {class: styles.stations + ''}, [
-			h('g', {class: styles.interchanges + ''}, [
-				renderInterchanges(state, actions)
-			])
-		].concat(renderStops(state, actions))),
-		renderHighlight(state)
+		h('svg', {
+			xmlns: 'http://www.w3.org/2000/svg',
+			'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+			viewBox: `0 0 ${data.width} ${data.height}`,
+			style: {
+				width: (data.width * 2) + 'px',
+				height: (data.height * 2) + 'px'
+			}
+		}, [
+			h('style', {}, css),
+			h('defs', {}, renderLabelDefs()),
+			h('g', {}, state.slices.map(renderSlice)),
+			h('g', {class: styles.labels + ''}, renderLabelUses(state)),
+			h('g', {class: styles.lines + ''}, renderLines(state)),
+			h('g', {class: styles.stations + ''}, [
+				h('g', {class: styles.interchanges + ''}, [
+					renderInterchanges(state, actions)
+				])
+			].concat(renderStops(state, actions))),
+			renderHighlight(state)
+		])
 	])
 
 module.exports = render
