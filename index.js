@@ -7,6 +7,7 @@ const createElement = require('virtual-dom/create-element')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
 const vbb = require('vbb-client')
+const scrollIntoView = require('scroll-into-view')
 
 const data = require('bvg-topological-map/index.json')
 const closestDistanceOnPath = require('./lib/closest-distance-on-path')
@@ -166,6 +167,14 @@ const setHighlight = (id) => {
 
 	state.highlight = {x, y}
 	rerender()
+
+	setTimeout(() => {
+		const map = document.getElementById('map')
+		scrollIntoView(el, {
+			time: 300,
+			validTarget: (el) => el === map
+		})
+	}, 10)
 }
 
 const actions = {
