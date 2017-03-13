@@ -9,6 +9,7 @@ const patch = require('virtual-dom/patch')
 const vbb = require('vbb-client')
 const scrollIntoView = require('scroll-into-view')
 
+const names = require('vbb-stations/names.json')
 const data = require('bvg-topological-map/index.json')
 const closestDistanceOnPath = require('./lib/closest-distance-on-path')
 const slicePath = require('./lib/slice-path')
@@ -79,13 +80,15 @@ const selectTo = (id, name) => {
 }
 
 const addStation = (id) => {
-	if (state.to.id) {
+	if (state.from.id) {
+		state.to.id = id
+		state.to.name = names[id] ? names[id].name : null
+	} else {
 		state.from.id = id
-		// todo: name
+		state.from.name = names[id] ? names[id].name : null
 		state.to.id = null
-	} else if (state.from.id) state.to.id = id
-	// todo: name
-	else state.from.id = id
+		state.to.name = null
+	}
 
 	state.from.suggestions = []
 	state.to.suggestions = []
