@@ -5,5 +5,4 @@ Thumbs.db
 node_modules
 npm-debug.log
 
-bundle.js
-bundle.min.js
+dist

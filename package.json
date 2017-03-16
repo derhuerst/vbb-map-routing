@@ -24,10 +24,10 @@
     "wzrd": "^1.5.0"
   },
   "scripts": {
-    "bundle": "browserify -t es2020 index.js > bundle.js",
-    "minify": "cat bundle.js | uglifyjs -mc > bundle.min.js",
+    "bundle": "browserify -t es2020 index.js > dist/bundle.js",
+    "minify": "cat dist/bundle.js | uglifyjs -mc > dist/bundle.min.js",
     "build": "npm run bundle && npm run minify",
-    "start": "wzrd index.js:bundle.js -- -t es2020"
+    "start": "cd dist; wzrd ../index.js:bundle.js -- -t es2020"
   },
   "dependencies": {
     "@turf/line-slice": "^3.7.0",
