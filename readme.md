@@ -1,5 +1,7 @@
 # vbb-map-routing
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/derhuerst/vbb-map-routing.svg)](https://greenkeeper.io/)
+
 **Use VBB interactively, using a map.**
 
 [![build status](https://img.shields.io/travis/derhuerst/vbb-map-routing.svg)](https://travis-ci.org/derhuerst/vbb-map-routing)
