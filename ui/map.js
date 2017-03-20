@@ -92,7 +92,7 @@ const renderStation = (state, id, station, actions) => {
 		].concat(station.lines).join(' '),
 		d: station.shape,
 		attributes: {'data-id': id},
-		'ev-click': () => actions.addStation(id)
+		'ev-click': () => actions.select(id)
 	})
 }
 

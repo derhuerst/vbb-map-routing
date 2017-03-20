@@ -79,21 +79,22 @@ const selectTo = (id, name) => {
 	rerender()
 }
 
-const addStation = (id) => {
-	if (state.from.id) {
-		state.to.id = id
-		state.to.name = names[id] ? names[id].name : null
-	} else {
+const select = (id) => {
+	if ((state.from.id && state.to.id) || !state.from.id) {
 		state.from.id = id
 		state.from.name = names[id] ? names[id].name : null
 		state.to.id = null
 		state.to.name = null
+	} else {
+		state.to.id = id
+		state.to.name = names[id] ? names[id].name : null
 	}
 
 	state.from.suggestions = []
 	state.to.suggestions = []
 	state.stations = []
 	state.slices = []
+	state.route = null
 
 	if (state.from.id && state.to.id) search()
 	rerender()
@@ -183,7 +184,7 @@ const setHighlight = (id) => {
 const actions = {
 	suggestFrom, suggestTo,
 	selectFrom, selectTo,
-	addStation,
+	select,
 	setRoute, search,
 	showPartDetails, hidePartDetails,
 	setHighlight
