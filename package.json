@@ -30,7 +30,7 @@
     "start": "cd dist; wzrd ../index.js:bundle.js -- -t es2020"
   },
   "dependencies": {
-    "@turf/line-slice": "^3.7.0",
+    "@turf/line-slice": "^4.0.0",
     "abs-svg-path": "^0.1.1",
     "bvg-topological-map": "derhuerst/bvg-topological-map",
     "csjs": "^1.0.6",
