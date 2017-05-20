@@ -43,7 +43,7 @@
     "scroll-into-view": "^1.7.4",
     "simplify-geometry": "0.0.2",
     "svg-path-properties": "^0.1.1",
-    "vbb-client": "^1.0.0",
+    "vbb-client": "^2.0.0",
     "vbb-util": "^0.10.1",
     "vbb-stations": "^5.0.0",
     "vhtml": "^2.1.0",
