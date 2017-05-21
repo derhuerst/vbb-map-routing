@@ -107,19 +107,19 @@ const setRoute = (route) => {
 	state.details = []
 
 	for (let part of route.parts) {
-		const from = part.from.id
-		const to = part.to.id
-		const line = part.product ? part.product.line : null
+		const origin = part.origin.id
+		const destination = part.destination.id
+		const line = part.line ? part.line.name : null
 
 		// todo: find a better way to compute the bounding box, without using the DOM
-		const fromEl = document.querySelector('#station-' + from)
-		const toEl = document.querySelector('#station-' + to)
+		const fromEl = document.querySelector('#station-' + origin)
+		const toEl = document.querySelector('#station-' + destination)
 		const lineEl = document.querySelector('#line-' + line)
 
 		if (fromEl && toEl && lineEl) {
-			state.stations.push(from)
+			state.stations.push(origin)
 			part.passed.forEach((passed) => state.stations.push(passed.station.id))
-			state.stations.push(from)
+			state.stations.push(origin)
 
 			const fromBBox = fromEl.getBBox()
 			const fromX = fromBBox.x + fromBBox.width / 2
@@ -140,7 +140,7 @@ const setRoute = (route) => {
 }
 
 const search = () => {
-	vbb.routes(+state.from.id, +state.to.id, {
+	vbb.journeys(state.from.id, state.to.id, {
 		results: 1, passedStations: true,
 		tram: false, regional: false, express: false, bus: false,
 		identifier: 'vbb-map-routing'
