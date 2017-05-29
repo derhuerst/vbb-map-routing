@@ -32,7 +32,7 @@
   "dependencies": {
     "@turf/line-slice": "^4.0.0",
     "abs-svg-path": "^0.1.1",
-    "bvg-topological-map": "derhuerst/bvg-topological-map",
+    "bvg-topological-map": "^0.1.1",
     "csjs": "^1.0.6",
     "debounce": "^1.0.0",
     "dom-delegator": "^13.1.0",

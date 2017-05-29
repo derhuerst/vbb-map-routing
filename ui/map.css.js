@@ -21,6 +21,9 @@ const styles = css `
 	fill: none;
 	stroke-width: 1;
 }
+.stations .station.inactive:hover {
+	opacity: 1;
+}
 
 .highlight {
 	fill: none;

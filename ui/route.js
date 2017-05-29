@@ -2,14 +2,21 @@
 
 const h = require('virtual-dom/h')
 const colors = require('vbb-util/lines/colors')
+const products = require('vbb-util/products')
 const ms = require('ms')
 
 const styles = require('./route.css.js')
 
 const renderLine = (part, i, details, actions) => {
-	const line = part.line || {}
-	const product = line.product
-	const color = colors[product] && colors[product][line.name] || {}
+	const line = part.line
+	let color = {}
+	if (line && line.product) {
+		if (colors[line.product] && colors[line.product][line.name]) {
+			color = colors[line.product][line.name]
+		} else if (products[line.product]) {
+			color = {fg: '#fff', bg: products[line.product].color}
+		}
+	}
 
 	const passed = []
 	if (details) {
@@ -18,15 +25,15 @@ const renderLine = (part, i, details, actions) => {
 		}
 	}
 
-	const nrOfPassed = h('span', {
+	const nrOfPassed = part.passed ? h('span', {
 		className: styles.link + '',
 		'ev-click': details ? () => actions.hidePartDetails(i) : () => actions.showPartDetails(i)
-	}, (part.passed.length - 1) + ' stations')
+	}, (part.passed.length - 1) + ' stations') : null
 
 	return h('li', {
 		className: styles.line + '',
 		style: {
-			borderLeftColor: color.bg || mode.color || '#999'
+			borderLeftColor: color.bg || '#999'
 		}
 	}, [
 		h('span', {

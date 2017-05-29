@@ -81,9 +81,10 @@ const selectFrom = (id, name) => {
 	state.from.id = id
 	state.from.name = name
 	state.from.selection = findStationPosition(id)
-
 	state.from.suggestions = []
+
 	state.highlight = null
+	if (!state.stations.includes(id)) state.stations.push(id)
 	rerender()
 }
 
@@ -91,24 +92,22 @@ const selectTo = (id, name) => {
 	state.to.id = id
 	state.to.name = name
 	state.to.selection = findStationPosition(id)
-
 	state.to.suggestions = []
+
 	state.highlight = null
+	if (!state.stations.includes(id)) state.stations.push(id)
 	rerender()
 }
 
 const select = (id) => {
 	if ((state.from.id && state.to.id) || !state.from.id) {
-		state.from.id = id
-		state.from.name = names[id] ? names[id].name : null
-		state.from.selection = findStationPosition(id)
+		selectFrom(id, names[id] ? names[id].name : null)
+
 		state.to.id = null
 		state.to.name = null
 		state.to.selection = null
 	} else {
-		state.to.id = id
-		state.to.name = names[id] ? names[id].name : null
-		state.to.selection = findStationPosition(id)
+		selectTo(id, names[id] ? names[id].name : null)
 	}
 
 	state.from.suggestions = []
