@@ -17,17 +17,28 @@ const slicePath = require('./lib/slice-path')
 const styles = require('./ui/styles')
 const render = require('./ui')
 
+const findStationPosition = (id) => {
+	const el = document.querySelector('#station-' + id)
+	if (el) {
+		const bbox = el.getBBox()
+		return {x: bbox.x + bbox.width / 2, y: bbox.y + bbox.height / 2}
+	}
+	return null
+}
+
 
 
 const state = {
 	from: {
 		id: null,
 		name: null,
+		selection: null,
 		suggestions: []
 	},
 	to: {
 		id: null,
 		name: null,
+		selection: null,
 		suggestions: []
 	},
 	searching: false,
@@ -69,6 +80,8 @@ const suggestTo = suggest('to')
 const selectFrom = (id, name) => {
 	state.from.id = id
 	state.from.name = name
+	state.from.selection = findStationPosition(id)
+
 	state.from.suggestions = []
 	state.highlight = null
 	rerender()
@@ -77,6 +90,8 @@ const selectFrom = (id, name) => {
 const selectTo = (id, name) => {
 	state.to.id = id
 	state.to.name = name
+	state.to.selection = findStationPosition(id)
+
 	state.to.suggestions = []
 	state.highlight = null
 	rerender()
@@ -86,11 +101,14 @@ const select = (id) => {
 	if ((state.from.id && state.to.id) || !state.from.id) {
 		state.from.id = id
 		state.from.name = names[id] ? names[id].name : null
+		state.from.selection = findStationPosition(id)
 		state.to.id = null
 		state.to.name = null
+		state.to.selection = null
 	} else {
 		state.to.id = id
 		state.to.name = names[id] ? names[id].name : null
+		state.to.selection = findStationPosition(id)
 	}
 
 	state.from.suggestions = []
@@ -178,6 +196,11 @@ const hidePartDetails = (part) => {
 
 const setHighlight = (id) => {
 	const el = document.querySelector('#station-' + id)
+	if (!el) {
+		console.error(`Could not find station ${id}.`)
+		return
+	}
+
 	// todo: find a better way to compute the bounding box, without using the DOM
 	const bbox = el.getBBox()
 	const x = bbox.x + bbox.width / 2

@@ -138,6 +138,16 @@ const renderHighlight = (state) => {
 	})
 }
 
+const renderSelection = (selection) => {
+	if (!selection) return null
+	return h('circle', {
+		class: styles.selection + '',
+		r: 10,
+		cx: selection.x,
+		cy: selection.y
+	})
+}
+
 const render = (state, actions) =>
 	h2('div', {
 		style: { overflow: 'scroll' }
@@ -162,6 +172,8 @@ const render = (state, actions) =>
 					renderInterchanges(state, actions)
 				])
 			].concat(renderStops(state, actions))),
+			renderSelection(state.from.selection),
+			renderSelection(state.to.selection),
 			renderHighlight(state)
 		])
 	])
