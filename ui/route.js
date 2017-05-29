@@ -13,8 +13,8 @@ const renderLine = (part, i, details, actions) => {
 
 	const passed = []
 	if (details) {
-		for (let stopover of part.passed) {
-			passed.push(h('li', {}, stopover.station.name))
+		for (let stopover of part.passed.slice(1, -1)) {
+			passed.push(h('li', {}, renderStation(stopover.station, actions)))
 		}
 	}
 
@@ -52,24 +52,27 @@ const renderLine = (part, i, details, actions) => {
 	])
 }
 
-const renderStop = (stop, actions) =>
+const renderStation = (station, actions) =>
+	h('div', {
+		className: styles.link + '',
+		'ev-click': () => actions.setHighlight(station.id)
+	}, station.name)
+
+const renderStopover = (station, actions) =>
 	h('li', {
-		className: styles.stop + ''
+		className: styles.stopover + ''
 	}, [
-		h('div', {
-			className: styles.link + '',
-			'ev-click': () => actions.setHighlight(stop.id)
-		}, stop.name)
+		renderStation(station, actions)
 	])
 
 const renderParts = (state, actions) =>
 	state.route.parts.reduce((parts, part, i) => {
-		if (i === 0) parts.push(renderStop(part.origin, actions))
+		if (i === 0) parts.push(renderStopover(part.origin, actions))
 
 		const details = state.details.includes(i)
 		parts.push(
 			renderLine(part, i, details, actions),
-			renderStop(part.destination, actions)
+			renderStopover(part.destination, actions)
 		)
 
 		return parts

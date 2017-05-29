@@ -30,6 +30,7 @@ const state = {
 		name: null,
 		suggestions: []
 	},
+	searching: false,
 	route: null,
 	details: [],
 	stations: [],
@@ -69,6 +70,7 @@ const selectFrom = (id, name) => {
 	state.from.id = id
 	state.from.name = name
 	state.from.suggestions = []
+	state.highlight = null
 	rerender()
 }
 
@@ -76,6 +78,7 @@ const selectTo = (id, name) => {
 	state.to.id = id
 	state.to.name = name
 	state.to.suggestions = []
+	state.highlight = null
 	rerender()
 }
 
@@ -95,6 +98,7 @@ const select = (id) => {
 	state.stations = []
 	state.slices = []
 	state.route = null
+	state.highlight = null
 
 	if (state.from.id && state.to.id) search()
 	rerender()
@@ -140,13 +144,23 @@ const setRoute = (route) => {
 }
 
 const search = () => {
+	state.searching = true
+	rerender()
+
 	vbb.journeys(state.from.id, state.to.id, {
 		results: 1, passedStations: true,
 		tram: false, regional: false, express: false, bus: false,
 		identifier: 'vbb-map-routing'
 	})
-	.then(([route]) => setRoute(route))
-	.catch(console.error)
+	.then(([route]) => {
+		state.searching = false
+		setRoute(route)
+	})
+	.catch((err) => {
+		console.error(err)
+		state.searching = false
+		rerender()
+	})
 }
 
 const showPartDetails = (part) => {

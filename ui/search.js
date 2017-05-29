@@ -39,8 +39,9 @@ const render = (state, actions) =>
 		toCompletion('to', state.to.name, state.to.suggestions, actions.selectTo, actions.suggestTo),
 		h('button', {
 			type: 'button',
+			disabled: state.searching ? 'disabled' : null,
 			'ev-click': () => actions.search()
-		}, 'lets go')
+		}, state.searching ? 'one moment…' : 'lets go')
 	])
 
 module.exports = render

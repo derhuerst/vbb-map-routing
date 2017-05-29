@@ -24,12 +24,12 @@ const styles = css `
 	background-color: rgba(52, 152, 219, .4);
 }
 
-.stop {
+.stopover {
 	padding: .2em 0;
 	margin-left: .2em;
 }
 
-.stop::before {
+.stopover::before {
 	margin-right: .3em;
 	display: inline-block;
 	width: 1em;
