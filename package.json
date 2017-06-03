@@ -20,7 +20,7 @@
     "browserify": "^14.0.0",
     "es2020": "^1.1.9",
     "stringify": "^5.1.0",
-    "uglify-js": "mishoo/UglifyJS2#harmony",
+    "uglify-es": "^3.0.15",
     "wzrd": "^1.5.0"
   },
   "scripts": {
