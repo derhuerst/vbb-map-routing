@@ -42,7 +42,7 @@
     "parse-svg-path": "^0.1.2",
     "scroll-into-view": "^1.7.4",
     "simplify-geometry": "0.0.2",
-    "svg-path-properties": "^0.1.1",
+    "svg-path-properties": "^0.2.1",
     "vbb-client": "^2.0.0",
     "vbb-util": "^0.10.1",
     "vbb-stations": "^5.2.0",
