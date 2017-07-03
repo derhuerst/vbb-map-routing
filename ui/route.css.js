@@ -47,6 +47,14 @@ const styles = css `
 	font-size: 90%;
 }
 
+.line .product {
+	display: inline-block;
+	margin-right: .3em;
+	width: 1.1em;
+	height: 1.1em;
+	vertical-align: middle;
+}
+
 .line .name {
 	display: inline-block;
 	padding: 0 .3em;

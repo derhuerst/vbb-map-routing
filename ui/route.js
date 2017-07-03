@@ -10,7 +10,14 @@ const styles = require('./route.css.js')
 const renderLine = (part, i, details, actions) => {
 	const line = part.line
 	let color = {}
+	let symbol = null
 	if (line && line.product) {
+		symbol = h('img', {
+			className: styles.product + '',
+			alt: line.product,
+			src: `https://cdn.rawgit.com/derhuerst/vbb-logos/v2/${line.product}.svg`
+		})
+
 		if (colors[line.product] && colors[line.product][line.name]) {
 			color = colors[line.product][line.name]
 		} else if (products[line.product]) {
@@ -25,10 +32,13 @@ const renderLine = (part, i, details, actions) => {
 		}
 	}
 
+	const l = part.passed.length
+	const label = (l - 1) + ' ' + (l === 2 ? 'station' : 'stations')
+
 	const nrOfPassed = part.passed ? h('span', {
 		className: styles.link + '',
 		'ev-click': details ? () => actions.hidePartDetails(i) : () => actions.showPartDetails(i)
-	}, (part.passed.length - 1) + ' stations') : null
+	}, label) : null
 
 	return h('li', {
 		className: styles.line + '',
@@ -36,6 +46,7 @@ const renderLine = (part, i, details, actions) => {
 			borderLeftColor: color.bg || '#999'
 		}
 	}, [
+		symbol,
 		h('span', {
 			className: styles.name + '',
 			style: {
