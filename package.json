@@ -17,7 +17,7 @@
     "node": ">=6"
   },
   "devDependencies": {
-    "browserify": "^14.0.0",
+    "browserify": "^15.0.0",
     "es2020": "^1.1.9",
     "stringify": "^5.1.0",
     "uglify-es": "^3.0.15",
