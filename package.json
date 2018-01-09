@@ -46,7 +46,7 @@
     "vbb-client": "^2.0.0",
     "vbb-util": "^0.10.1",
     "vbb-journey-ui": "derhuerst/vbb-journey-ui",
-    "vbb-stations": "^5.2.0",
+    "vbb-stations": "^6.0.0",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }
