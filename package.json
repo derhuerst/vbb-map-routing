@@ -17,14 +17,16 @@
     "node": ">=6"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
     "browserify": "^15.0.0",
-    "es2020": "^1.1.9",
     "stringify": "^5.1.0",
-    "uglify-es": "^3.0.15",
+    "uglify-es": "^3.3.7",
     "wzrd": "^1.5.0"
   },
   "scripts": {
-    "bundle": "browserify -t es2020 index.js > dist/bundle.js",
+    "bundle": "browserify -t [babelify --presets env] index.js > dist/bundle.js",
     "minify": "cat dist/bundle.js | uglifyjs -mc > dist/bundle.min.js",
     "build": "npm run bundle && npm run minify",
     "start": "cd dist; wzrd ../index.js:bundle.js -- -t es2020"
@@ -45,7 +47,7 @@
     "svg-path-properties": "^0.4.0",
     "vbb-client": "^2.0.0",
     "vbb-util": "^0.10.1",
-    "vbb-journey-ui": "derhuerst/vbb-journey-ui",
+    "vbb-journey-ui": "github:derhuerst/vbb-journey-ui",
     "vbb-stations": "^6.0.0",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
