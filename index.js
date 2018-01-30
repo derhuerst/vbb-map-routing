@@ -42,7 +42,7 @@ const state = {
 		suggestions: []
 	},
 	searching: false,
-	route: null,
+	journey: null,
 	details: [],
 	stations: [],
 	slices: [],
@@ -114,23 +114,23 @@ const select = (id) => {
 	state.to.suggestions = []
 	state.stations = []
 	state.slices = []
-	state.route = null
+	state.journey = null
 	state.highlight = null
 
 	if (state.from.id && state.to.id) search()
 	rerender()
 }
 
-const setRoute = (route) => {
-	state.route = route
+const setJourney = (journey) => {
+	state.journey = journey
 	state.stations = []
 	state.slices = []
 	state.details = []
 
-	for (let part of route.parts) {
-		const origin = part.origin.id
-		const destination = part.destination.id
-		const line = part.line ? part.line.name : null
+	for (let leg of journey.legs) {
+		const origin = leg.origin.id
+		const destination = leg.destination.id
+		const line = leg.line && leg.line.name || null
 
 		// todo: find a better way to compute the bounding box, without using the DOM
 		const fromEl = document.querySelector('#station-' + origin)
@@ -139,7 +139,9 @@ const setRoute = (route) => {
 
 		if (fromEl && toEl && lineEl) {
 			state.stations.push(origin)
-			part.passed.forEach((passed) => state.stations.push(passed.station.id))
+			leg.passed.forEach((passed) => {
+				state.stations.push(passed.station.id)
+			})
 			state.stations.push(origin)
 
 			const fromBBox = fromEl.getBBox()
@@ -169,9 +171,9 @@ const search = () => {
 		tram: false, regional: false, express: false, bus: false,
 		identifier: 'vbb-map-routing'
 	})
-	.then(([route]) => {
+	.then(([journey]) => {
 		state.searching = false
-		setRoute(route)
+		setJourney(journey)
 	})
 	.catch((err) => {
 		console.error(err)
