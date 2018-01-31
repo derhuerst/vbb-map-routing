@@ -45,10 +45,10 @@
     "scroll-into-view": "^1.7.4",
     "simplify-geometry": "0.0.2",
     "svg-path-properties": "^0.4.0",
-    "vbb-client": "^3.0.0",
-    "vbb-util": "^0.10.1",
-    "vbb-journey-ui": "github:derhuerst/vbb-journey-ui",
+    "vbb-client": "^3.0.1",
+    "vbb-journey-ui": "^1.0.0",
     "vbb-stations": "^6.0.0",
+    "vbb-util": "^0.10.1",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }

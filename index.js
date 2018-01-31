@@ -223,7 +223,7 @@ const actions = {
 	suggestFrom, suggestTo,
 	selectFrom, selectTo,
 	select,
-	setRoute, search,
+	setJourney, search,
 	showPartDetails, hidePartDetails,
 	setHighlight
 }
