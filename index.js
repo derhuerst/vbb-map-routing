@@ -182,13 +182,13 @@ const search = () => {
 	})
 }
 
-const showPartDetails = (part) => {
+const showLegDetails = (part) => {
 	if (state.details.includes(part)) return
 	state.details.push(part)
 	rerender()
 }
 
-const hidePartDetails = (part) => {
+const hideLegDetails = (part) => {
 	const i = state.details.indexOf(part)
 	if (i === -1) return
 	state.details.splice(i, 1)
@@ -224,7 +224,7 @@ const actions = {
 	selectFrom, selectTo,
 	select,
 	setJourney, search,
-	showPartDetails, hidePartDetails,
+	showLegDetails, hideLegDetails,
 	setHighlight
 }
 
