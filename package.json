@@ -29,6 +29,7 @@
   },
   "scripts": {
     "build": "env NODE_ENV=production browserify -g [babelify --presets env] -g envify -g uglifyify index.js | uglifyjs -mc > dist/bundle.js",
+    "build:dev": "env NODE_ENV=dev browserify -g envify index.js > dist/bundle.js",
     "start": "cd dist; wzrd ../index.js:bundle.js -- -t es2020"
   },
   "dependencies": {
@@ -37,7 +38,7 @@
     "bvg-topological-map": "^0.1.1",
     "csjs": "^1.0.6",
     "debounce": "^1.0.0",
-    "dom-delegator": "^13.1.0",
+    "dom-delegator": "github:derhuerst/dom-delegator",
     "global": "^4.3.1",
     "insert-styles": "^1.2.1",
     "ms": "^2.0.0",
