@@ -7,6 +7,8 @@ script:
 after_script:
   - ls -lh dist/bundle.*
 deploy:
+  edge:
+    branch: v1.8.47
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
