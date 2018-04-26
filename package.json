@@ -24,7 +24,7 @@
     "envify": "^4.1.0",
     "stringify": "^5.1.0",
     "uglify-es": "^3.3.9",
-    "uglifyify": "^4.0.5",
+    "uglifyify": "^5.0.0",
     "wzrd": "^1.5.0"
   },
   "scripts": {
