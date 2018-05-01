@@ -11,17 +11,10 @@ const styles = css `
 	fill: none;
 }
 
-.lines .line {
-	fill: none;
-	stroke-width: 1;
-}
-
-.stations .station {
+.station {
 	cursor: pointer;
-	fill: none;
-	stroke-width: 1;
 }
-.stations .station.inactive:hover {
+.station.inactive:hover {
 	opacity: 1;
 }
 
@@ -37,14 +30,10 @@ const styles = css `
 	stroke: #3498db;
 }
 
-.stations .interchanges .station {
+.station.interchange {
 	fill: #fff;
 	stroke: #000;
 	stroke-width: .5;
-}
-
-.stations .station.wifi {
-	/* fill: #f9e800; */
 }
 `
 

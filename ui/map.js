@@ -2,131 +2,27 @@
 
 const h = require('virtual-dom/virtual-hyperscript/svg')
 const h2 = require('virtual-dom/h')
-const data = require('bvg-topological-map/index.json')
+const _render = require('bvg-topological-map/render')
 
 const styles = require('./map.css.js')
 
-const css = (() => {
-	let css = ''
+const renderSlices = (data, slices) => {
+	const items = []
 
-	for (let line in data.lines) {
-		const color = data.lines[line].color
-		css += `
-.${styles.lines} .${line}, .${styles.stations} .${line} {stroke: ${color}}`
-	}
-
-	return css
-})()
-
-const renderLabelDefs = () => {
-	const r = []
-	for (let id in data.labels) {
-		const label = data.labels[id]
-
-		r.push(h('g', {
-			id: 'label-' + id
-		}, [
-			h('path', {
-				fill: label.bg, d: label.body
-			})
-		].concat(label.caption.map((part) =>
-			h('path', {
-				fill: label.fg, d: part
-			})
-		))))
-	}
-	return r
-}
-
-const renderLabelUses = (state) => {
-	const r = []
-	for (let id in data.labels) {
-		const label = data.labels[id]
-		for (let position of label.positions) {
-			const [x, y] = position
-
-			const inactive = state.journey
-				? (state.slices.find(({line}) => line === id) ? '' : styles.inactive)
-				: ''
-			r.push(h('use', {
-				class: [
-					styles.label, id, inactive
-				].join(' '),
-				'xlink:href': '#label-' + id,
-				href: '#label-' + id,
-				transform: `translate(${x}, ${y})`
-			}))
-		}
-	}
-	return r
-}
-
-const renderLines = (state) => {
-	const r = []
-	for (let id in data.lines) {
-		const line = data.lines[id]
-
-		const inactive = state.journey ? styles.inactive : ''
-		r.push(h('path', {
-			id: 'line-' + id,
+	for (let {shape, line} of slices) {
+		items.push(h('path', {
 			class: [
-				styles.line, id, inactive
+				styles.slice, line
 			].join(' '),
-			d: line.shape
+			d: shape,
+			style: {
+				stroke: data.lines[line].color
+			}
 		}))
 	}
-	return r
+
+	return h('g', {}, items)
 }
-
-const renderStation = (state, id, station, actions) => {
-	let inactive = ''
-	if (state.journey) {
-		if (!state.stations.includes(id)) inactive = styles.inactive
-	}
-	return h('path', {
-		id: 'station-' + id,
-		class: [
-			styles.station,
-			station.wifi ? styles.wifi : '',
-			inactive
-		].concat(station.lines).join(' '),
-		d: station.shape,
-		attributes: {'data-id': id},
-		'ev-click': () => actions.select(id)
-	})
-}
-
-const renderInterchanges = (state, actions) => {
-	const r = []
-	for (let id in data.stations) {
-		const station = data.stations[id]
-		if (!station.interchange) continue
-
-		r.push(renderStation(state, id, station, actions))
-	}
-	return r
-}
-
-const renderStops = (state, actions) => {
-	const r = []
-	for (let id in data.stations) {
-		const station = data.stations[id]
-		if (station.interchange) continue
-		r.push(renderStation(state, id, station, actions))
-	}
-	return r
-}
-
-const renderSlice = ({shape, line}) =>
-	h('path', {
-		class: [
-			styles.slice, styles.line, line
-		].join(' '),
-		d: shape,
-		style: {
-			stroke: data.lines[line].color
-		}
-	})
 
 const renderHighlight = (state) => {
 	if (!state.highlight) return null
@@ -148,34 +44,66 @@ const renderSelection = (selection) => {
 	})
 }
 
-const render = (state, actions) =>
-	h2('div', {
+const render = (state, actions) => {
+	const rootProps = (h, opt, data) => {
+		const props = _render.defaults.rootProps(h, opt, data)
+
+		if (!props.style) props.style = {}
+		props.style.width = (data.width * 2) + 'px'
+		props.style.height = (data.height * 2) + 'px'
+
+		return props
+	}
+	const labelProps = (h, id, pos) => {
+		const props = _render.defaults.labelProps(h, id, pos)
+
+		props.class += ' ' + styles.label
+		if (state.journey && !state.slices.find(s => s.line === id)) {
+			props.class += ' ' + styles.inactive
+		}
+
+		return props
+	}
+	const lineProps = (h, id, line) => {
+		const props = _render.defaults.lineProps(h, id, line)
+		if (state.journey) props.class += ' ' + styles.inactive
+		return props
+	}
+	const stationProps = (h, id, station) => {
+		const props = _render.defaults.stationProps(h, id, station)
+
+		props.class += ' ' + styles.station
+		if (station.wifi) props.class += ' ' + styles.wifi
+		if (station.interchange) props.class += ' ' + styles.interchange
+		if (state.journey && !state.stations.includes(id)) {
+			props.class += ' ' + styles.inactive
+		}
+		props['ev-click'] = () => actions.select(id)
+
+		return props
+	}
+
+	const middleLayer = (h, opt, data) => [
+		renderSlices(data, state.slices)
+	]
+	const topLayer = (h, opt, data) => [
+		renderSelection(state.from.selection),
+		renderSelection(state.to.selection),
+		renderHighlight(state)
+	]
+
+	return h2('div', {
 		style: { overflow: 'scroll' }
 	}, [
-		h('svg', {
-			id: 'map',
-			xmlns: 'http://www.w3.org/2000/svg',
-			'xmlns:xlink': 'http://www.w3.org/1999/xlink',
-			viewBox: `0 0 ${data.width} ${data.height}`,
-			style: {
-				width: (data.width * 2) + 'px',
-				height: (data.height * 2) + 'px'
-			}
-		}, [
-			h('style', {}, css),
-			h('defs', {}, renderLabelDefs()),
-			h('g', {}, state.slices.map(renderSlice)),
-			h('g', {class: styles.labels + ''}, renderLabelUses(state)),
-			h('g', {class: styles.lines + ''}, renderLines(state)),
-			h('g', {class: styles.stations + ''}, [
-				h('g', {class: styles.interchanges + ''}, [
-					renderInterchanges(state, actions)
-				])
-			].concat(renderStops(state, actions))),
-			renderSelection(state.from.selection),
-			renderSelection(state.to.selection),
-			renderHighlight(state)
-		])
+		_render(h, {
+			rootProps,
+			labelProps,
+			lineProps,
+			stationProps,
+			middleLayer,
+			topLayer
+		})
 	])
+}
 
 module.exports = render
