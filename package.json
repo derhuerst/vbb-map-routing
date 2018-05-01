@@ -30,7 +30,7 @@
   "scripts": {
     "build": "env NODE_ENV=production browserify -g [babelify --presets env --ignore '/node_modules\\/virtual-dom/'] -g envify -g uglifyify index.js | uglifyjs -mc > dist/bundle.js",
     "build:dev": "env NODE_ENV=dev browserify --debug -g envify index.js > dist/bundle.js",
-    "start": "cd dist; wzrd ../index.js:bundle.js -- -t es2020"
+    "start": "cd dist; env NODE_ENV=dev wzrd ../index.js:bundle.js -- -g envify"
   },
   "dependencies": {
     "@turf/line-slice": "^5.0.4",

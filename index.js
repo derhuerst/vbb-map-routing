@@ -10,7 +10,6 @@ const vbb = require('vbb-client')
 const scrollIntoView = require('scroll-into-view')
 
 const names = require('vbb-stations/names.json')
-const data = require('bvg-topological-map/index.json')
 const closestDistanceOnPath = require('./lib/closest-distance-on-path')
 const slicePath = require('./lib/slice-path')
 
