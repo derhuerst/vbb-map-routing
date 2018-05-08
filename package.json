@@ -28,7 +28,9 @@
     "wzrd": "^1.5.0"
   },
   "scripts": {
-    "build": "env NODE_ENV=production browserify -g [babelify --presets env --ignore '/node_modules\\/virtual-dom/'] -g envify -g uglifyify index.js | uglifyjs -mc > dist/bundle.js",
+    "bundle": "env NODE_ENV=production browserify -g [babelify --presets env --ignore '/node_modules\\/virtual-dom/'] -g envify -g uglifyify index.js | uglifyjs -mc > dist/bundle.js",
+    "css": "cp $(node -e \"process.stdout.write(require.resolve('vbb-journey-ui/styles.css'))\") dist/vbb-journey-ui.css",
+    "build": "npm run bundle && npm run css",
     "build:dev": "env NODE_ENV=dev browserify --debug -g envify index.js > dist/bundle.js",
     "start": "cd dist; env NODE_ENV=dev wzrd ../index.js:bundle.js -- -g envify"
   },
@@ -41,13 +43,14 @@
     "dom-delegator": "github:derhuerst/dom-delegator",
     "global": "^4.3.1",
     "insert-styles": "^1.2.1",
-    "ms": "^2.0.0",
+    "luxon": "^1.2.0",
+    "ms": "^2.1.1",
     "parse-svg-path": "^0.1.2",
     "scroll-into-view": "^1.7.4",
     "simplify-geometry": "0.0.2",
     "svg-path-properties": "^0.4.0",
     "vbb-client": "^3.0.1",
-    "vbb-journey-ui": "^1.0.0",
+    "vbb-journey-ui": "^2.0.2",
     "vbb-stations": "^6.0.0",
     "vbb-util": "^0.10.1",
     "vhtml": "^2.1.0",
