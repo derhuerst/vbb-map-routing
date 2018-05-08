@@ -166,7 +166,7 @@ const search = () => {
 	rerender()
 
 	vbb.journeys(state.from.id, state.to.id, {
-		results: 1, passedStations: true,
+		results: 1, passedStations: true, transferInfo: true,
 		tram: false, regional: false, express: false, bus: false,
 		identifier: 'vbb-map-routing'
 	})
