@@ -6,7 +6,7 @@ const document = require('global/document')
 const createElement = require('virtual-dom/create-element')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
-const vbb = require('vbb-client')
+const createClient = require('vbb-client')
 const scrollIntoView = require('scroll-into-view')
 
 const names = require('vbb-stations/names.json')
@@ -49,6 +49,11 @@ const state = {
 }
 
 
+
+const vbb = createClient()
+const bvg = createClient({
+	endpoint: 'https://1.bvg.transport.rest'
+})
 
 const suggest = (which) => debounce((query) => {
 	query = query.trim()
@@ -127,21 +132,23 @@ const setJourney = (journey) => {
 	state.details = []
 
 	for (let leg of journey.legs) {
-		const origin = leg.origin.id
-		const destination = leg.destination.id
+		let origin = leg.origin
+		if (origin.station) origin = origin.station
+		let destination = leg.destination.id
+		if (destination.station) destination = destination.station
 		const line = leg.line && leg.line.name || null
 
 		// todo: find a better way to compute the bounding box, without using the DOM
-		const fromEl = document.querySelector('#station-' + origin)
+		const fromEl = document.querySelector('#station-' + origin.id)
 		const toEl = document.querySelector('#station-' + destination)
 		const lineEl = document.querySelector('#line-' + line)
 
 		if (fromEl && toEl && lineEl) {
-			state.stations.push(origin)
-			leg.passed.forEach((passed) => {
-				state.stations.push(passed.station.id)
+			state.stations.push(origin.id)
+			leg.stopovers.forEach((stopover) => {
+				state.stations.push(stopover.stop.id)
 			})
-			state.stations.push(origin)
+			state.stations.push(origin.id)
 
 			const fromBBox = fromEl.getBBox()
 			const fromX = fromBBox.x + fromBBox.width / 2
@@ -165,8 +172,9 @@ const search = () => {
 	state.searching = true
 	rerender()
 
-	vbb.journeys(state.from.id, state.to.id, {
-		results: 1, passedStations: true, transferInfo: true,
+	bvg.journeys(state.from.id, state.to.id, {
+		results: 1, stopovers: true,
+		// todo: transferInfo: true
 		tram: false, regional: false, express: false, bus: false,
 		identifier: 'vbb-map-routing'
 	})
