@@ -1,0 +1,144 @@
+.vbb-journey-ui-journey {
+	margin: 0;
+	padding-left: .5em;
+	text-align: left;
+	list-style: none;
+	line-height: 1.4;
+	color: #444;
+}
+
+.vbb-journey-ui-link {
+	padding: 0 .25em;
+	display: inline-block;
+	line-height: 1.4;
+	background-color: transparent;
+	border-radius: .2em;
+	cursor: pointer;
+}
+.vbb-journey-ui-link:hover {
+	background-color: rgba(52, 152, 219, .4);
+}
+
+.vbb-journey-ui-stopover {
+	position: relative;
+	display: flex;
+	padding: .2em 0 .2em 1.4em;
+}
+.vbb-journey-ui-stopover > * {
+	align-self: baseline;
+}
+
+.vbb-journey-ui-stopover::before {
+	position: absolute;
+	content: ' ';
+	width: .5em;
+	height: .5em;
+	left: .35em;
+	top: 50%;
+	margin-top: -.25em;
+	border-radius: .25em;
+	background-color: #777;
+}
+
+.vbb-journey-ui-stopover .vbb-journey-ui-name {
+	flex-grow: 1;
+}
+.vbb-journey-ui-stopover .vbb-journey-ui-when,
+.vbb-journey-ui-stopover .vbb-journey-ui-delay {
+	padding-left: .25em;
+	display: inline-block;
+	font-size: 90%;
+	color: #777;
+}
+.vbb-journey-ui-stopover .vbb-journey-ui-delay {
+	padding-left: .05em;
+}
+
+.vbb-journey-ui-leg {
+	position: relative;
+	margin-left: .5em;
+	padding: .2em 0 .2em 1.7em;
+	border-left: .4em solid #999;
+	font-size: 90%;
+}
+.vbb-journey-ui-leg.vbb-journey-ui-walking {
+	border-left-style: dotted;
+}
+
+.vbb-journey-ui-leg .vbb-journey-ui-line-container {
+	position: absolute;
+	top: .9em;
+	left: 0;
+	margin-left: -1.5em;
+	width: 2.6em;
+	text-align: center;
+	z-index: 1;
+}
+.vbb-journey-ui-leg .vbb-journey-ui-line {
+	display: inline-block;
+	padding: .15em .2em;
+	line-height: 1;
+	word-break: break-word;
+	border-radius: .2em;
+	background-color: #999;
+	color: #fff;
+}
+
+.vbb-journey-ui-leg .vbb-journey-ui-product {
+	display: inline-block;
+	width: 1.9ex;
+	height: 1.9ex;
+	vertical-align: middle;
+}
+.vbb-journey-ui-leg .vbb-journey-ui-product {
+	display: inline-block;
+	width: 2.2ex;
+	height: 2.2ex;
+	vertical-align: middle;
+}
+
+.vbb-journey-ui-leg .vbb-journey-ui-direction {
+	vertical-align: middle;
+}
+
+.vbb-journey-ui-leg .vbb-journey-ui-details {
+	padding: .2em 0;
+	display: block;
+	list-style: none;
+	color: #777;
+}
+.vbb-journey-ui-leg .vbb-journey-ui-details:first-child {
+	padding-top: 0;
+}
+.vbb-journey-ui-leg .vbb-journey-ui-details:last-child {
+	padding-bottom: 0;
+}
+
+.vbb-journey-ui-leg .vbb-journey-ui-transfer-position {
+	display: block;
+	line-height: 1;
+}
+.vbb-journey-ui-leg .vbb-journey-ui-transfer-position svg {
+	margin: .1em 0 0 0;
+	width: 100%;
+	max-height: 2.2em;
+}
+
+.vbb-journey-ui-leg .vbb-journey-ui-details .vbb-journey-ui-stopover {
+	position: relative;
+	margin-left: -.25em;
+	border-bottom-color: #999;
+}
+.vbb-journey-ui-leg .vbb-journey-ui-details .vbb-journey-ui-stopover::before {
+	content: '';
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: -1.6em;
+	margin-top: -.15em;
+	width: .5em;
+	height: 0;
+	border-bottom-width: .3em;
+	border-bottom-style: solid;
+	border-bottom-color: inherit;
+}
