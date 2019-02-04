@@ -26,7 +26,7 @@
     "wzrd": "^1.5.0"
   },
   "scripts": {
-    "bundle": "webpack --mode production",
+    "bundle": "env NODE_ENV=production webpack --mode production",
     "css": "cp $(node -e \"process.stdout.write(require.resolve('vbb-journey-ui/styles.css'))\") dist/vbb-journey-ui.css",
     "build": "npm run bundle && npm run css",
     "build:dev": "webpack --mode development --debug",
@@ -50,7 +50,6 @@
     "vbb-client": "^4.0.0",
     "vbb-journey-ui": "^3.0.0",
     "vbb-stations": "^6.0.0",
-    "vbb-util": "^0.10.1",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }

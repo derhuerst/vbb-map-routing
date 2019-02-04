@@ -1,4 +1,3 @@
-sudo: false
 language: node_js
 node_js:
   - 'stable'
@@ -14,4 +13,5 @@ deploy:
   github_token: $GITHUB_TOKEN
   on:
     branch: master
+    node: stable
   local_dir: dist
