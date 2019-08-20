@@ -35,7 +35,7 @@
   "dependencies": {
     "@turf/line-slice": "^5.0.4",
     "abs-svg-path": "^0.1.1",
-    "bvg-topological-map": "^0.2.0",
+    "bvg-topological-map": "^1.0.0",
     "csjs": "^1.0.6",
     "debounce": "^1.0.0",
     "dom-delegator": "github:derhuerst/dom-delegator",
