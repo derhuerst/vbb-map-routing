@@ -49,7 +49,7 @@
     "svg-path-properties": "^0.5.0",
     "vbb-client": "^4.0.0",
     "vbb-journey-ui": "^3.0.0",
-    "vbb-stations": "^6.0.0",
+    "vbb-stations": "^7.0.0",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }
