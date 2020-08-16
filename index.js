@@ -1,12 +1,14 @@
 'use strict'
 
+require('regenerator-runtime/runtime')
+
 const debounce = require('debounce')
 const delegator = require('dom-delegator')
 const document = require('global/document')
 const createElement = require('virtual-dom/create-element')
 const diff = require('virtual-dom/diff')
 const patch = require('virtual-dom/patch')
-const createClient = require('vbb-client')
+const createClient = require('hafas-rest-api-client')
 const scrollIntoView = require('scroll-into-view')
 
 const names = require('vbb-stations/names.json')
@@ -50,9 +52,8 @@ const state = {
 
 
 
-const vbb = createClient()
-const bvg = createClient({
-	endpoint: 'https://1.bvg.transport.rest'
+const vbb = createClient('https://v5.vbb.transport.rest', {
+	userAgent: 'https://github.com/derhuerst/vbb-map-routing',
 })
 
 const suggest = (which) => debounce((query) => {
@@ -68,8 +69,7 @@ const suggest = (which) => debounce((query) => {
 	}
 
 	vbb.stations({
-		query, completion: true,
-		identifier: 'vbb-map-routing'
+		query,
 	})
 	.then((suggestions) => {
 		state[which].suggestions = suggestions
@@ -172,13 +172,16 @@ const search = () => {
 	state.searching = true
 	rerender()
 
-	bvg.journeys(state.from.id, state.to.id, {
-		results: 1, stopovers: true,
-		// todo: transferInfo: true
-		tram: false, regional: false, express: false, bus: false,
-		identifier: 'vbb-map-routing'
+	vbb.journeys(state.from.id, state.to.id, {
+		tram: false, regional: false, express: false, bus: false, ferry: false,
+		results: 1,
+		stopovers: true,
+		remarks: false,
+		// https://github.com/public-transport/vbb-hafas/blob/6f7dcde29741696e8a37f5d68ec0af60cc4bb717/index.js#L35-L44
+		transferInfo: true,
 	})
-	.then(([journey]) => {
+	.then((res) => {
+		const [journey] = res.journeys
 		state.searching = false
 		setJourney(journey)
 	})
