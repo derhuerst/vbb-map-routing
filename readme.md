@@ -2,10 +2,10 @@
 
 **Use VBB interactively, using a map.**
 
-[![build status](https://img.shields.io/travis/derhuerst/vbb-map-routing.svg)](https://travis-ci.org/derhuerst/vbb-map-routing)
+[![build status](https://api.travis-ci.org/derhuerst/vbb-map-routing.svg?branch=master)](https://travis-ci.org/derhuerst/vbb-map-routing)
 ![ISC-licensed](https://img.shields.io/github/license/derhuerst/vbb-map-routing.svg)
-[![gitter channel](https://badges.gitter.im/derhuerst/vbb-rest.svg)](https://gitter.im/derhuerst/vbb-rest)
-[![support me on Patreon](https://img.shields.io/badge/support%20me-on%20patreon-fa7664.svg)](https://patreon.com/derhuerst)
+[![chat with me on Gitter](https://img.shields.io/badge/chat%20with%20me-on%20gitter-512e92.svg)](https://gitter.im/derhuerst)
+[![support me via GitHub Sponsors](https://img.shields.io/badge/support%20me-donate-fa7664.svg)](https://github.com/sponsors/derhuerst)
 
 ## Contributing
 
