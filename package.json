@@ -38,7 +38,7 @@
   "dependencies": {
     "@turf/line-slice": "^5.0.4",
     "abs-svg-path": "^0.1.1",
-    "bvg-topological-map": "^0.2.0",
+    "bvg-topological-map": "^1.0.0",
     "core-js": "^3.6.5",
     "csjs": "^1.0.6",
     "debounce": "^1.0.0",
@@ -52,9 +52,9 @@
     "regenerator-runtime": "^0.13.7",
     "scroll-into-view": "^1.7.4",
     "simplify-geometry": "0.0.2",
-    "svg-path-properties": "^0.5.0",
+    "svg-path-properties": "^1.0.5",
     "vbb-journey-ui": "^3.0.0",
-    "vbb-stations": "^6.0.0",
+    "vbb-stations": "^7.3.0",
     "vhtml": "^2.1.0",
     "virtual-dom": "^2.1.1"
   }
