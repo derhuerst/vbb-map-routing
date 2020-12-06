@@ -25,15 +25,15 @@
     "@babel/core": "^7.0.1",
     "@babel/preset-env": "^7.0.0",
     "babel-loader": "^8.0.2",
-    "webpack": "^4.19.0",
-    "webpack-cli": "^3.1.0",
+    "webpack": "^5.10.0",
+    "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
     "bundle": "env NODE_ENV=production webpack --mode production",
     "css": "cp $(node -e \"process.stdout.write(require.resolve('vbb-journey-ui/styles.css'))\") dist/vbb-journey-ui.css",
     "build": "npm run bundle && npm run css",
-    "start": "webpack-dev-server"
+    "start": "webpack serve"
   },
   "dependencies": {
     "@turf/line-slice": "^5.0.4",

@@ -7,7 +7,8 @@ module.exports = {
 	entry: join(__dirname, 'index.js'),
 	output: {
 		path: DIST,
-		filename: 'bundle.js'
+		filename: 'bundle.js',
+		publicPath: '/',
 	},
 	target: 'web',
 	module: {
